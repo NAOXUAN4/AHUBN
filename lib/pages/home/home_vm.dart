@@ -8,7 +8,7 @@ class HomeViewModel {
     Dio dio = Dio();
     dio.options = BaseOptions(
       method: "get",
-      baseUrl: "http://www.wanandroid.com/",
+      baseUrl: "https://www.wanandroid.com/",
       connectTimeout: Duration(seconds: 30),
       receiveTimeout: Duration(seconds: 30),
       sendTimeout: Duration(seconds: 30)

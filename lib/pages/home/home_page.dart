@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold( // scaffold组件
+      backgroundColor: Colors.white,
       body: SafeArea(child: SingleChildScrollView(  //避免被顶部导航栏遮挡
         child: Column(children: [ //使用safe_area，防止顶部导航栏被遮挡
           _banner(),
@@ -161,6 +162,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(15.r),
                             child: Image.network(bannerList?[index].imagePath ?? "",
                               fit: BoxFit.cover,),
+
+                            // child: Image.asset("assets/images/av2.jpg",
+                            //   fit: BoxFit.cover,),
                           ),
                           Expanded(child: Container( //右边功能按钮
                             decoration: BoxDecoration(
