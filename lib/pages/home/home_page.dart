@@ -1,3 +1,4 @@
+import 'package:exp1_10_29/datas/home_Lists_data.dart';
 import 'package:exp1_10_29/pages/home/home_vm.dart';
 import 'package:exp1_10_29/pages/webView_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 import '../../datas/home_banner_data.dart';
 import '../../route/routes.dart';
 
@@ -17,39 +19,36 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage> {
 
+  HomeViewModel vm = HomeViewModel();  //初始化vm，即实例化的数据模型
   List<BannerData>? bannerList;
-
-  void initState() {
-    super.initState();
-    initBannerData();
-  }
-
-  void initBannerData() async{   //异步获取banner数据
-    bannerList = await HomeViewModel.getBanner();
-    setState(() {});
-  }
+  List<HomeItemsData>? listData;  //type = ["datas"]
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold( // scaffold组件
-      backgroundColor: Colors.white,
-      body: SafeArea(child: SingleChildScrollView(  //避免被顶部导航栏遮挡
-        child: Column(children: [ //使用safe_area，防止顶部导航栏被遮挡
-          _banner(),
-          ListView.builder( //下方内容
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _ListItem(index: index);
-            },
-            itemCount: bannerList?.length ?? 0,)
-        ],)),
-      ));
+  void initState() {
+    super.initState();
+    vm.getBanner();   //数据模型获取banner数据
+    vm.getHomeListData();   //数据模型获取首页列表数据
+  }
+
+  Widget build(BuildContext context){
+    return ChangeNotifierProvider<HomeViewModel>(create: (context){  //设置变化监听对象vm
+      return vm;
+    },
+    child: Scaffold( // scaffold组件
+        backgroundColor: Colors.white,
+        body: SafeArea(child: SingleChildScrollView(  //避免被顶部导航栏遮挡
+            child: Column(children: [ //使用safe_area，防止顶部导航栏被遮挡
+              _banner(),
+              _ListView(),
+            ],)),
+        ))
+    );
   }
 
   Widget _banner(){
-    return Container(height: 200.h, child: //顶部导航栏，
-      Swiper(itemCount: bannerList?.length ?? 0, itemBuilder: (context, index) { //滚动banner组件
+    return Consumer<HomeViewModel>(builder: (context,vm,child) {   //provider刷新组件，监听vm有变化刷新Comsumer
+      return Container(height: 200.h, child: //顶部导航栏，
+      Swiper(itemCount: vm.bannerList?.length ?? 0, itemBuilder: (context, index) { //滚动banner组件
         return Container(
           color: Colors.white,
           height: 150.h,
@@ -60,136 +59,179 @@ class _HomePageState extends State<HomePage> {
           //外边距
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15.r), //圆角Clipt
-            child: Image.network(bannerList?[index].imagePath ?? "",
+            child: Image.network(vm.bannerList?[index].imagePath ?? "",
               fit: BoxFit.cover,), //资源需要在pubspec.yaml声明
           ),
         );
       },),
-      ); //顶部导航栏，
+      );
+    }); //顶部导航栏，
   }  // 顶部Banner，
 
-  Widget _ListItem({required int index}) {
-    //下方详细列表单元
-    return InkWell(
-        onTap: () {
-          // Navigator.push(context, MaterialPageRoute(builder: (context){   //跳转页面,构造页面为组件
-          //   return WebViewPage(title: "首页跳转",);
-          // }));
-          Navigator.pushNamed(context, RouteName.webViewPage,arguments: {
-            "title":"从此首页跳转",
-            "message":"Card index: ${index}"});  //路由跳转,传入参数
+  Widget _ListView(){
+    return Consumer<HomeViewModel>(builder: (context,vm,child){
+      return ListView.builder( //下方内容
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return _ListItem(index: index);
         },
-        child:
-        Container( //外部包裹Container
-            height: 150.h,
-            width: double.infinity,
-            margin: EdgeInsets.symmetric(vertical: 5.r, horizontal: 15.r),
-            decoration: BoxDecoration(
-              color: HexColor("#f1e9f2"), //
-              borderRadius: BorderRadius.circular(15.r), //卡片圆角
-              border: Border.all(color: HexColor("#fcf5ff"), width: 2.r),
-            ),
-            child: Column( //内部元素行排列
-                children: [
-                  Container( //card头部Container
-                      width: double.infinity,
-                      height: 30.sp,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7.r), //标题圆角
-                        color: HexColor("#f1e9f2"), // 淡紫色
-                      ),
-                      margin: EdgeInsets.symmetric(
-                          vertical: 5.r, horizontal: 10.r),
+        itemCount: vm.listData?.length ?? 0,);
+    });
 
-                      child: Row(
-                        children: [
-                          CircleAvatar( //头像
-                            radius: 15.r,
-                            foregroundImage: AssetImage(
-                              "assets/images/av2.jpg",),
-                            backgroundColor: HexColor("#fffffff"),
+  }
 
-                          ),
-                          Column( //标题
-                            crossAxisAlignment: CrossAxisAlignment.start, //文本靠左
-                            mainAxisAlignment: MainAxisAlignment.center,
+  Widget _ListItem({required int index}) {
+    return Consumer<HomeViewModel>(builder: (context,vm,child){
+      return InkWell(
+          onTap: () {
+            // Navigator.push(context, MaterialPageRoute(builder: (context){   //跳转页面,构造页面为组件
+            //   return WebViewPage(title: "首页跳转",);
+            // }));
+            Navigator.pushNamed(context, RouteName.webViewPage,arguments: {
+              "title":vm.listData?[index].title ?? "",
+              "message":"Card index: ${index}",
+              "target_url": vm.listData?[index].link ?? ""});  //路由跳转,传入参数
+          },
+          child:
+          Container( //外部包裹Container
+              height: 150.h,
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: 5.r, horizontal: 15.r),
+              decoration: BoxDecoration(
+                color: HexColor("#f1e9f2"), //
+                borderRadius: BorderRadius.circular(15.r), //卡片圆角
+                border: Border.all(color: HexColor("#fcf5ff"), width: 2.r),
+              ),
+              child: Column( //内部元素行排列
+                  children: [
+                    Container( //card头部Container
+                        width: double.infinity,
+                        height: 30.sp,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7.r), //标题圆角
+                          color: HexColor("#f1e9f2"), // 淡紫色
+                        ),
+                        margin: EdgeInsets.symmetric(
+                            vertical: 5.r, horizontal: 10.r),
 
-                            children: [
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5.r),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      bannerList?[index].desc ?? "",
-                                      style: TextStyle(fontSize: 10.sp,
-                                      ),),
-                                    Text(
-                                      "副标题副标题副标题副标题副标题副标题副标题副标题副标题副标题",
-                                      style: TextStyle(fontSize: 5.sp
-                                      ),),
-                                  ],
-                                ),
-                              )
+                        child: Row(
+                          children: [
+                            CircleAvatar( //头像
+                              radius: 15.r,
+                              foregroundImage: AssetImage(
+                                "assets/images/av2.jpg",),
+                              backgroundColor: HexColor("#fffffff"),
 
-                            ],),
-                          Expanded( //点赞图标
-                            child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5.r),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-
-                                    Icon(
-                                      Icons.thumb_up,
-                                      color: HexColor("#a39fa5"),
-                                      size: 15.sp,
-                                    ),
-                                  ],
-                                )
                             ),
-                          )
-                        ],
-                      )),
-                  Container( //card正文Container
-                      margin: EdgeInsets.all(5.r),
-                      width: double.infinity,
-                      height: 105.sp,
-                      child: Row( //行布局
-                        crossAxisAlignment: CrossAxisAlignment.start, //靠左
-                        children: [
-                          ClipRRect( //圆角图片承载
-                            borderRadius: BorderRadius.circular(15.r),
-                            child: Image.network(bannerList?[index].imagePath ?? "",
-                              fit: BoxFit.cover,),
-
-                            // child: Image.asset("assets/images/av2.jpg",
-                            //   fit: BoxFit.cover,),
-                          ),
-                          Expanded(child: Container( //右边功能按钮
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7.r),
-                              color: HexColor("#dbdeff0"),
-                            ),
-                            height: 110.sp,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 0.r, horizontal: 5.r),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
+                            Column( //标题
+                              crossAxisAlignment: CrossAxisAlignment.start, //文本靠左
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.more_vert,
-                                  color: HexColor("#a39fa5"),
+                                Container(
+                                  width: 200.w,
+                                  margin: EdgeInsets.symmetric(horizontal: 5.r),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        vm.listData?[index].title ?? "",
+                                        style: TextStyle(fontSize: 10.sp,),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        "副标题副标题副标题副标题副标题副标题副标题副标题副标题副标题",
+                                        style: TextStyle(fontSize: 5.sp
+                                        ),),
+                                    ],
+                                  ),
                                 )
-                              ],
-                            ),
-                          ))
-                        ],)
-                  )
-                ])
-        ) //外部包裹Container
-    );
+
+                              ],),
+                            Expanded( //点赞图标
+                              child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 5.r),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+
+                                      Icon(
+                                        Icons.thumb_up,
+                                        color: HexColor("#a39fa5"),
+                                        size: 15.sp,
+                                      ),
+                                    ],
+                                  )
+                              ),
+                            )
+                          ],
+                        )),
+                    Container( //card正文Container
+                        margin: EdgeInsets.all(5.r),
+                        width: double.infinity,
+                        height: 105.sp,
+                        child: Row( //行布局
+                          crossAxisAlignment: CrossAxisAlignment.start, //靠左
+                          children: [
+                            Container(   //左侧图片
+                              width: 200.w,
+                              height: 105.sp,
+                              child:
+                                ClipRRect( //圆角图片承载
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  child: Image.asset("assets/images/banner1.jpg",
+                                    fit: BoxFit.cover,),
+
+                                  // child: Image.asset("assets/images/av2.jpg",
+                                  //   fit: BoxFit.cover,),
+                                )),
+                            Expanded(child: Container( //右边功能按钮
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7.r),
+                                color: HexColor("#dbdeff0"),
+                              ),
+                              height: 110.sp,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 0.r, horizontal: 5.r),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5.r),
+                                    alignment: Alignment.centerLeft,
+                                    height: 20.sp,
+                                    constraints: BoxConstraints(
+                                      maxWidth: 60.w,  // 最大宽度
+                                      minWidth: 0,     // 最小宽度设为0，允许自适应
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(7.r),
+                                      color: HexColor("#fcf5ff"),
+                                    ),
+                                    child:
+                                      Text("${vm.listData?[index].chapterName}",
+                                        style: TextStyle(fontSize: 8.sp,color: HexColor("#a39fa5")),
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.left,),
+                                  ),
+                                  Icon(
+                                    Icons.more_vert,
+                                    color: HexColor("#a39fa5"),
+                                  )
+                                ],
+                              ),
+                            ))
+                          ],)
+                    )
+                  ])
+          ) //外部包裹Container
+      );
+
+    });
+
+    //下方详细列表单元
+
   }  //内容卡片
 }
 
