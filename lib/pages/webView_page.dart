@@ -34,7 +34,7 @@ class _WebViewPageState extends State<WebViewPage> {
     if (map is Map){
       _message = map["message"];
       _target_url = map["target_url"];
-      print(_target_url);
+      // print(_target_url);
     }
     // 如果控制器还没初始化，在这里初始化
     if (!_isControllerInitialized) {
@@ -42,7 +42,6 @@ class _WebViewPageState extends State<WebViewPage> {
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
       // 这里可以使用从路由获取的参数来构建 URL
         ..loadRequest(Uri.parse("${_target_url}"));
-
       _isControllerInitialized = true;
 
 
