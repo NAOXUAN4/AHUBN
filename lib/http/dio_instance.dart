@@ -1,7 +1,9 @@
+//封装dio实例
 import 'package:dio/dio.dart';
 import 'package:exp1_10_29/http/http_methods.dart';
+import 'package:exp1_10_29/http/print_log_interceptor.dart';
+import 'package:exp1_10_29/http/rsp_interceptor.dart';
 
-//封装dio实例
 class DioInstance{
   static DioInstance ? _instance;
   DioInstance._();
@@ -30,6 +32,8 @@ class DioInstance{
       responseType: responseType ?? ResponseType.json,
       contentType: contentType ?? Headers.formUrlEncodedContentType,
     );
+    _dio.interceptors.add(PrintLogInterceptor());
+    _dio.interceptors.add(ResponseInterceptor());
   }
 
   //封装get请求

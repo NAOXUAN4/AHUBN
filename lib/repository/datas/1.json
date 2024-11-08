@@ -1,5 +1,4 @@
 {
-  "data": {
     "curPage": 2,
     "datas": [
       {
@@ -818,7 +817,4 @@
     "pageCount": 789,
     "size": 20,
     "total": 15780
-  },
-  "errorCode": 0,
-  "errorMsg": ""
 }

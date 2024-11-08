@@ -1,42 +1,55 @@
 import 'package:dio/dio.dart';
-import 'package:exp1_10_29/datas/home_Lists_data.dart';
-import 'package:exp1_10_29/datas/home_banner_data.dart';
+import 'package:exp1_10_29/repository/api.dart';
+import 'package:exp1_10_29/repository/datas/home_Lists_data.dart';
 import 'package:exp1_10_29/http/dio_instance.dart';
 import 'package:flutter/foundation.dart';
+
+import '../../repository/datas/home_Lists_data.dart';
+import '../../repository/datas/home_banner_data.dart';
 
 
 class HomeViewModel with ChangeNotifier{
 
-  List<BannerData>? bannerList;
-  List<HomeItemsData>? listData;
+  List<HomeBannerData?>? bannerList;
+
+  int ListPageCountNow = 0;  //default:1
+  List<HomeItemsData>? listData = [];
+
 
   // 获取轮播图数据
   Future getBanner() async {
     // TODO: implement getBanner
-    Response response  = await DioInstance.instance().get(path: "banner/json");
-    HomeBannerData bannerdata = HomeBannerData.fromJson(response.data);
-    if(bannerdata.data!=null){
-      bannerList =  bannerdata.data;
-      print("Get succ");
+    List<HomeBannerData?>? bannerdata = await Api.instance.getBanner();   //type:List<HomeBannerData>  封装的Api请求
+    if(bannerdata!=null){
+      bannerList =  bannerdata;
     }else {
       bannerList = [];
-      print("banner Null");
     }
     notifyListeners();
   }
 
-  // 获取首页列表数据
-  Future getHomeListData() async {
-    Response response  = await DioInstance.instance().get(path: "article/list/1/json");  //异步中等待返回数据，才执行下面的
-    HomeData homeData = HomeData.fromJson(response.data);
-    if(homeData.data!=null){
-      listData =  homeData.data?.datas;   //type:List<HomeItemData>
-      print("HomeList Get succ");
+  Future initListData(bool LoadMore)async{
+    if(!LoadMore){
+      listData?.clear();
+      ListPageCountNow = 0;
+      await getTopList();
+      await getHomeListData(LoadMore);  //LoadMore = true
     }else {
-      listData = [];
-      print("Home List Null");
+      ListPageCountNow++;
+      await getHomeListData(LoadMore);
     }
+
+  }
+  // 获取首页列表数据
+  Future getHomeListData(bool LoadMore) async {
+    List<HomeItemsData>? homeData = await Api.instance.getHomeListData("$ListPageCountNow");
+    listData?.addAll(homeData ?? []);
     notifyListeners();
 
   }
+  Future getTopList() async {
+    List<HomeItemsData>? topList = await Api.instance.getTopList();
+    listData?.addAll(topList ?? []);
+  }
+
 }

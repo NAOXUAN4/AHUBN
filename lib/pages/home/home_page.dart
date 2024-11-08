@@ -1,4 +1,4 @@
-import 'package:exp1_10_29/datas/home_Lists_data.dart';
+import 'package:exp1_10_29/repository/datas/home_banner_data.dart';
 import 'package:exp1_10_29/pages/home/home_vm.dart';
 import 'package:exp1_10_29/pages/webView_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
-import '../../datas/home_banner_data.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../../repository/datas/home_Lists_data.dart';
+import '../../repository/datas/home_banner_data.dart';
 import '../../route/routes.dart';
 
 class HomePage extends StatefulWidget{
@@ -20,14 +22,16 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage> {
 
   HomeViewModel vm = HomeViewModel();  //初始化vm，即实例化的数据模型
-  List<BannerData>? bannerList;
-  List<HomeItemsData>? listData;  //type = ["datas"]
+  RefreshController refreshController = RefreshController();  //下拉刷新控制器
+  List<HomeBannerData?>? bannerList;
+  List<HomeItemsData?>? listData;  //type = ["datas"]
 
   @override
   void initState() {
     super.initState();
     vm.getBanner();   //数据模型获取banner数据
-    vm.getHomeListData();   //数据模型获取首页列表数据
+    // vm.getHomeListData();   //数据模型获取首页列表数据
+    vm.initListData(false);
   }
 
   Widget build(BuildContext context){
@@ -36,13 +40,36 @@ class _HomePageState extends State<HomePage> {
     },
     child: Scaffold( // scaffold组件
         backgroundColor: Colors.white,
-        body: SafeArea(child: SingleChildScrollView(  //避免被顶部导航栏遮挡
-            child: Column(children: [ //使用safe_area，防止顶部导航栏被遮挡
-              _banner(),
-              _ListView(),
-            ],)),
+        body: SafeArea(  //避免被顶部导航栏遮挡
+          child:SmartRefresher(    //页面拉动刷新
+            controller: refreshController,
+            enablePullUp: true,
+            enablePullDown: true,
+            header: MaterialClassicHeader(),
+            footer: ClassicFooter(),
+            onLoading: () {
+              vm.initListData(true).then((value){
+                refreshController.loadComplete();
+              });
+            },
+            onRefresh: () {
+              vm.getBanner().then((value){
+                vm.initListData(false).then((value){
+                  refreshController.refreshCompleted();
+                });
+              });   //数据模型获取banner数据
+            },
+            child:SingleChildScrollView(
+              child: Column(
+                children: [
+                  //使用safe_area，防止顶部导航栏被遮挡
+                  _banner(),
+                  _ListView(),
+                ],
+              )
+            )
         ))
-    );
+    ));
   }
 
   Widget _banner(){
@@ -59,8 +86,8 @@ class _HomePageState extends State<HomePage> {
           //外边距
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15.r), //圆角Clipt
-            child: Image.network(vm.bannerList?[index].imagePath ?? "",
-              fit: BoxFit.cover,), //资源需要在pubspec.yaml声明
+            child: Image.network(vm.bannerList?[index]?.imagePath ?? "",
+                fit:BoxFit.contain), //资源需要在pubspec.yaml声明
           ),
         );
       },),
@@ -95,13 +122,15 @@ class _HomePageState extends State<HomePage> {
           },
           child:
           Container( //外部包裹Container
-              height: 150.h,
+              height: 180.h,
               width: double.infinity,
               margin: EdgeInsets.symmetric(vertical: 5.r, horizontal: 15.r),
               decoration: BoxDecoration(
                 color: HexColor("#f1e9f2"), //
                 borderRadius: BorderRadius.circular(15.r), //卡片圆角
-                border: Border.all(color: HexColor("#fcf5ff"), width: 2.r),
+                border: Border.all(
+                    color: (vm.listData?[index].type?.toInt() == 0) ?  HexColor("#fcf5ff") : HexColor("#7bda81"),
+                    width: 2.r),
               ),
               child: Column( //内部元素行排列
                   children: [
