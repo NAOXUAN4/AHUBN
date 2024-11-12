@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {   //重载_MyHomePageState类
               useMaterial3: true,
             ),
             onGenerateRoute: Routes.generateRoute,   //导入配置好的路由
-            initialRoute: RouteName.home,   //设置初始路由路径(String)
+            initialRoute: RouteName.tab,   //设置初始路由路径(String)
           );
         }
       )); // OKToast()

@@ -1,3 +1,4 @@
+import 'package:exp1_10_29/pages/tab_page.dart';
 import 'package:flutter/material.dart';
 import '../pages/webView_page.dart';
 import '../pages/home/home_page.dart';
@@ -7,9 +8,9 @@ class Routes{
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case RouteName.home:
+      case RouteName.tab:
         return pageRoute(
-            HomePage(),
+            TabPage(),
             settings: settings);
       case RouteName.webViewPage:
         var map = settings.arguments as Map;   //接收参数，转化为map
@@ -45,7 +46,7 @@ class Routes{
 }
 
 class RouteName{
-  static const String home = '/';
+  static const String tab = '/';
   static const String webViewPage = '/webViewPage';
   static const String test = '/test';
 }

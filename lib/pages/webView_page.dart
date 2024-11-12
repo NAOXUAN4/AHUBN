@@ -18,6 +18,7 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   late WebViewController _controller;
+
   bool _isControllerInitialized = false;
   var _message = "NULL";
   var _target_url = "";
@@ -43,8 +44,6 @@ class _WebViewPageState extends State<WebViewPage> {
       // 这里可以使用从路由获取的参数来构建 URL
         ..loadRequest(Uri.parse("${_target_url}"));
       _isControllerInitialized = true;
-
-
     }
   }
   @override
@@ -53,30 +52,22 @@ class _WebViewPageState extends State<WebViewPage> {
       appBar: AppBar(title: Text(widget.title),),
       body: SafeArea(child: Container(
           child: Column(children: [
-            Container(
-                margin: EdgeInsets.all(15.r),
-                height: 80.h,
-                width: 400.h,
-                decoration: BoxDecoration(
-                  color: HexColor("#b0abb2"),
-                  borderRadius: BorderRadius.circular(15.r),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(_message,
-                          textAlign:TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 15.sp),),
-                        Text("Roll_times: ${_roll_times}"),
-                      ],
-                    ),
-                    _buildButtons(),
-                  ],
-                )
-            ),
+            // Container(
+            //     margin: EdgeInsets.all(15.r),
+            //     height: 80.h,
+            //     width: 400.h,
+            //     decoration: BoxDecoration(
+            //       color: HexColor("#b0abb2"),
+            //       borderRadius: BorderRadius.circular(15.r),
+            //     ),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //
+            //         _buildButtons(),
+            //       ],
+            //     )
+            // ),
             _webviewContainer(),
           ],)),
       )
