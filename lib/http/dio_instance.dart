@@ -1,8 +1,12 @@
 //封装dio实例
+
 import 'package:dio/dio.dart';
-import 'package:exp1_10_29/http/http_methods.dart';
 import 'package:exp1_10_29/http/print_log_interceptor.dart';
 import 'package:exp1_10_29/http/rsp_interceptor.dart';
+
+import 'cookie_interceptor.dart';
+import 'http_methods.dart';
+
 
 class DioInstance{
   static DioInstance ? _instance;
@@ -32,8 +36,10 @@ class DioInstance{
       responseType: responseType ?? ResponseType.json,
       contentType: contentType ?? Headers.formUrlEncodedContentType,
     );
+    _dio.interceptors.add(CookieInterceptor());   //先添加cookie拦截器，防止后面拦截器污染
     _dio.interceptors.add(PrintLogInterceptor());
     _dio.interceptors.add(ResponseInterceptor());
+
   }
 
   //封装get请求

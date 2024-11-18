@@ -1,12 +1,11 @@
-import 'package:exp1_10_29/pages/hot_key/hotkey_page_vm.dart';
-import 'package:exp1_10_29/repository/datas/common_website_data.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
-
 import '../../route/routes.dart';
+import 'hotkey_page_vm.dart';
 
 class HotKeyPage extends StatefulWidget {
   const HotKeyPage({super.key});
@@ -34,11 +33,29 @@ class _HotKeyPageState extends State<HotKeyPage> {
           children: [
             _hotKeyBar(),
             SizedBox(height: 10),
-            _gridItems(0),//HotKeyGrid
+            Container(
+              padding: EdgeInsets.all(5.r),
+              margin: EdgeInsets.all(2.r),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                gradient: LinearGradient(colors: [HexColor("#e7d1f2"), HexColor("#ffffff")],
+                      stops: [0.0, 1.0],), //
+              ),
+              child: _gridItems(0),
+            ),//热词GridView1
             SizedBox(height: 10),
             _commonWebbar(),
             SizedBox(height: 10),
-            _gridItems(1),
+            Container(
+              padding: EdgeInsets.all(5.r),
+              margin: EdgeInsets.all(2.r),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                gradient: LinearGradient(colors: [HexColor("#e7d1f2"), HexColor("#ffffff")],
+                      stops: [0.0, 1.0],), //
+              ),
+              child: _gridItems(1),
+            )//常用网站GridView2
           ],
         )),)
     ));
@@ -47,13 +64,12 @@ class _HotKeyPageState extends State<HotKeyPage> {
   Widget _hotKeyBar(){
     return
       Container(   //第一排SizeBox
+        margin: EdgeInsets.only(left: 2.w,right: 2.w),
         decoration: BoxDecoration(
-            color: HexColor("#ffffff"),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: HexColor("#f7effa"),
+            borderRadius: BorderRadius.all(Radius.circular(15.r)),
             // border: Border.all(color: Colors.black12),
-            border:Border.symmetric(      // 设置上下分界线
-                vertical: BorderSide.none,
-                horizontal: BorderSide(color: Colors.white, width: 3))
+            border:Border.all(color: HexColor("#e8d2f2"), width: 2)
         ),
         width: double.infinity,
         height: 50.h,
@@ -71,15 +87,13 @@ class _HotKeyPageState extends State<HotKeyPage> {
         ),);
   }
   Widget _commonWebbar(){
-    return
-      Container(   //第一排SizeBox
+    return Container(   //第一排SizeBox
+        margin: EdgeInsets.only(left: 2.w,right: 2.w),
         decoration: BoxDecoration(
-            color: HexColor("#ffffff"),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: HexColor("#f7effa"),
+            borderRadius: BorderRadius.all(Radius.circular(15.r)),
             // border: Border.all(color: Colors.black12),
-            border:Border.symmetric(      // 设置上下分界线
-                vertical: BorderSide.none,
-                horizontal: BorderSide(color: Colors.white, width: 3))
+            border:Border.all(color: HexColor("#e8d2f2"), width: 2)
         ),
         width: double.infinity,
         height: 50.h,
@@ -92,6 +106,7 @@ class _HotKeyPageState extends State<HotKeyPage> {
         ],//标题，搜索图标
 
         ),);
+
   }
 
   Widget _gridItems(int ItemState) {  // 0:热词，1:常用网站

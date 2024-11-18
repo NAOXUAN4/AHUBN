@@ -1,10 +1,11 @@
 //api请求统一解析
 import 'package:dio/dio.dart';
-import 'package:exp1_10_29/repository/datas/home_banner_data.dart';
-import 'package:exp1_10_29/repository/datas/hot_key_data.dart';
+import 'package:exp1_10_29/repository/datas/login_data.dart';
 import '../http/dio_instance.dart';
 import 'datas/common_website_data.dart';
 import 'datas/home_Lists_data.dart';
+import 'datas/home_banner_data.dart';
+import 'datas/hot_key_data.dart';
 
 class Api {
   static Api instance = Api._();
@@ -46,6 +47,34 @@ class Api {
         path: "hotkey/json");
     HotKeyListData hotkey = HotKeyListData.fromJson(response.data);
     return hotkey.hotkeyList;
+  }
+
+  Future<dynamic>register(String? username,String? password,String? repassword)async{
+    Response response = await DioInstance.instance().post(   //发送Post传参请求
+        path: "user/register",
+        data: {"username":username,"password":password,"repassword":repassword});
+    print(response.data);
+    try{ //若报错肯定进入过拦截器的错误处理
+      response.data["errorCode"] == 0; //没被修改过，还存在"errcode"
+      return true;
+    }
+    catch(e){
+      return false;
+    }//拦截器会返回true或false
+  }
+
+  Future<dynamic>login(String? username,String? password)async{  //登录
+    Response response = await DioInstance.instance().post(   //发送Post传参请求
+        path: "user/login",
+        data: {"username":username,"password":password,});
+    print(response.data);
+    try{ //若报错肯定进入过拦截器的错误处理
+      response.data["errorCode"] == 0; //没被修改过，还存在"errcode"
+      return LoginData.fromJson(response.data);
+    }
+    catch(e){
+      return false;
+    }//拦截器会返回true或false
   }
 
 

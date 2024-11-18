@@ -1,11 +1,17 @@
-import 'package:exp1_10_29/http/dio_instance.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
-import 'pages/home/home_page.dart';
+import 'http/dio_instance.dart';
 import './route/routes.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(  //设置状态栏透明
+    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+    
+  ));
   DioInstance.instance().initDio(baseUrl: "https://www.wanandroid.com/");
   runApp(const MyApp());
 }

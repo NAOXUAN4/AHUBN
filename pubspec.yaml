@@ -53,6 +53,12 @@ dependencies:
   webview_flutter: ^4.10.0
   # 8.pull_to_refresh:
   pull_to_refresh: ^2.0.0
+  #9.font
+  google_fonts: ^6.1.1
+  #10.icon
+  icons_launcher: ^2.1.0
+  #11.shared_preferences: 本地化存储
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

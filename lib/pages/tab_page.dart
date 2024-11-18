@@ -1,10 +1,12 @@
-import 'package:exp1_10_29/pages/home/home_page.dart';
-import 'package:exp1_10_29/pages/hot_key/hot_key_page.dart';
+
 import 'package:exp1_10_29/pages/personal/personal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+
+import 'home/home_page.dart';
+import 'hot_key/hot_key_page.dart';
 
 class TabPage extends StatefulWidget{   //创建继承自StatefulWidget的类，必须要一个State实例
   @override
@@ -23,8 +25,8 @@ class _TabPageState extends State<TabPage>{
         index: _currentIndex,
         children: [
           HomePage(),
+          HotKeyPage(),
           PersonalPage(),
-          HotKeyPage()
       ],),
       bottomNavigationBar: BottomNavigationBar(   //底部导航栏
         selectedLabelStyle: TextStyle(color: HexColor("#575558"),fontSize: 12.sp,fontFamily: "Roboto"),

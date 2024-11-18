@@ -1,6 +1,4 @@
-import 'package:exp1_10_29/repository/datas/home_banner_data.dart';
-import 'package:exp1_10_29/pages/home/home_vm.dart';
-import 'package:exp1_10_29/pages/webView_page.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +9,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../repository/datas/home_Lists_data.dart';
 import '../../repository/datas/home_banner_data.dart';
 import '../../route/routes.dart';
+import 'home_vm.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -126,7 +125,8 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               margin: EdgeInsets.symmetric(vertical: 5.r, horizontal: 15.r),
               decoration: BoxDecoration(
-                color: HexColor("#f1e9f2"), //
+                gradient: LinearGradient(colors: [HexColor("#e7d1f2"), HexColor("#ffffff")],
+                      stops: [0.0, 1.0],), //
                 borderRadius: BorderRadius.circular(15.r), //卡片圆角
                 border: Border.all(
                     color: (vm.listData?[index].type?.toInt() == 0) ?  HexColor("#fcf5ff") : HexColor("#7bda81"),
@@ -135,14 +135,15 @@ class _HomePageState extends State<HomePage> {
               child: Column( //内部元素行排列
                   children: [
                     Container( //card头部Container
+                        padding: EdgeInsets.all(1.r),
                         width: double.infinity,
                         height: 30.sp,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(7.r), //标题圆角
-                          color: HexColor("#f1e9f2"), // 淡紫色
+                          color: HexColor("#fff5fe"), // 淡紫色
                         ),
                         margin: EdgeInsets.symmetric(
-                            vertical: 5.r, horizontal: 10.r),
+                            vertical: 5.r, horizontal: 5.r),
 
                         child: Row(
                           children: [

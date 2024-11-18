@@ -1,9 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:exp1_10_29/repository/api.dart';
-import 'package:exp1_10_29/repository/datas/home_Lists_data.dart';
-import 'package:exp1_10_29/http/dio_instance.dart';
 import 'package:flutter/foundation.dart';
-
+import '../../repository/api.dart';
 import '../../repository/datas/home_Lists_data.dart';
 import '../../repository/datas/home_banner_data.dart';
 
@@ -14,8 +11,6 @@ class HomeViewModel with ChangeNotifier{
 
   int ListPageCountNow = 0;  //default:1
   List<HomeItemsData>? listData = [];
-
-
   // 获取轮播图数据
   Future getBanner() async {
     // TODO: implement getBanner
