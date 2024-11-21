@@ -111,4 +111,12 @@ class Api {
     return searchData.datas;
   }
 
+  Future mycollects(String pageCount) async{
+    Response response = await DioInstance.instance().get(
+        path: "lg/collect/list/$pageCount/json");
+    // var mycollectsData = SearchData.fromJson(response.data);
+    HomeListsData collectsData = HomeListsData.fromJson(response.data);  //用homeListsData解析？
+    return collectsData.datas;
+  }
+
 }

@@ -46,14 +46,14 @@ class _LoginPageState extends State<LoginPage> {
     // 直接通过控制器获取输入值
     final username = _usernameController.text;
     final password = _passwordController.text;
-    print('用户名: $username, 密码: $password,');
+    // print('用户名: $username, 密码: $password,');
 
     ViewModel.loginInfo.username = username == "" ? null : username;  //赋值给ViewModel.loginInfo
     ViewModel.loginInfo.password = password == "" ? null : password;
 
     ViewModel.login().then((value) {
       if(value == true){
-        showToast("登录成功");
+        // showToast("登录成功");
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => TabPage()), // 假设TabPage是你想要跳转的目标页面

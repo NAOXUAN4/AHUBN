@@ -10,7 +10,7 @@ class LoadingUi {
 
   static Future showLoading()async {
     showToastWidget(Container(
-      color: Colors.transparent,
+      color: theme_color.theme_color_Lightest,
       constraints: const BoxConstraints.expand(),  //子类占满父类
       child: Align(
         child: Container(
@@ -27,7 +27,7 @@ class LoadingUi {
         ),
       ),
     ),
-        duration: const Duration(days: 1),  //持续显示
+        duration: const Duration(seconds: 20),  //持续显示
         handleTouch: true);  //触摸时是否隐藏,否
   }
 

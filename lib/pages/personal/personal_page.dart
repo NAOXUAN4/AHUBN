@@ -109,11 +109,11 @@ class _PersonalPageState extends State<PersonalPage> {
   }
 
   Widget _SettingList(PersonalViewModel vm){
-    var titles = ["我的收藏","检查更新","关于我的","退出登录"];
+    var titles = ["我的收藏","检查更新","关于我们","退出登录"];
     List<GestureTapCallback> callbacks = [
-      vm.nickname == "未登录" ? (){} : (){showToast("未登录");},
-      (){},
-      (){},
+      vm.nickname == "未登录" ? (){showToast("未登录");} : (){Navigator.pushNamed(context, RouteName.mycollects);},
+      (){showToast("已经是最新版本");},
+      (){Navigator.pushNamed(context, RouteName.about);},
       vm.nickname != "未登录" ? (){
         personalViewModel.logout().then((value){
           Navigator.pushAndRemoveUntil(

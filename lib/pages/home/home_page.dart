@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                         width: double.infinity,
                         height: 60.sp,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.r), //标题圆角
+                          borderRadius: BorderRadius.circular(15.r), //标题圆角
                           color: theme_color.theme_color_Lightest,
                         ),
                         margin: EdgeInsets.symmetric(
@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Text(
                                         vm.listData?[index].title ?? "",
-                                        style: TextStyle(fontSize: 10.sp,color: theme_color.theme_color_Darkest,),
+                                        style: TextStyle(fontSize: 12.sp,color: theme_color.theme_color_Darkest,),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Text(
@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
 
                                       Icon(
                                         vm.listData?[index].collect == true ? Icons.star : Icons.star_border,   //Icons.star
-                                        color:  vm.listData?[index].collect == true ? theme_color.theme_color_Aveage :theme_color.theme_color_Aveage,
+                                        color:  vm.listData?[index].collect == true ? theme_color.theme_color_Aveage:theme_color.theme_color_Aveage,
                                         size: 25.sp,
                                       ),
                                     ],))),)],

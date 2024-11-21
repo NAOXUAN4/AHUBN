@@ -51,7 +51,23 @@ class _WebViewPageState extends State<WebViewPage> {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
       // 这里可以使用从路由获取的参数来构建 URL
-        ..loadRequest(Uri.parse("${_target_url}"));
+        ..loadRequest(Uri.parse("${_target_url}"))
+        ..setNavigationDelegate(NavigationDelegate(
+        onPageFinished: (String url) {
+          // 确保在第一帧绘制后隐藏
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            LoadingUi.hideLoading();
+          });
+        },
+          onWebResourceError: (webResourceError) {
+          // 确保在第一帧绘制后隐藏
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            LoadingUi.hideLoading();
+          });
+        },
+
+        ));
+
       _isControllerInitialized = true;
 
     }

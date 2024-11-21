@@ -13,6 +13,7 @@ class theme_color{
   static const Color theme_color_Darkest = Color(0xff23363c);
 
   static const Color theme_color_pink = Color(0xfff7effa);
+  static const Color theme_color_lightBlue = Color(0xff7ca4ff);
 
 
 

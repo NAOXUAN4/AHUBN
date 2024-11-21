@@ -1,4 +1,6 @@
 
+import 'package:exp1_10_29/pages/about_auth/about_auth_pagr.dart';
+import 'package:exp1_10_29/pages/mycollects/mycollects_page.dart';
 import 'package:exp1_10_29/pages/search/search_page.dart';
 import 'package:flutter/material.dart';
 import '../pages/auth/login_page.dart';
@@ -38,6 +40,14 @@ class Routes{
         return pageRoute(
             SearchPage(keyword: "${map["search_text"]}"),
           settings: settings);
+      case RouteName.mycollects:
+        return pageRoute(
+            MyCollectsPage(),
+            settings: settings);
+      case RouteName.about:
+        return pageRoute(
+            Aboutpage(),
+            settings: settings);
       default:
         return pageRoute(
             HomePage(),
@@ -69,4 +79,6 @@ class RouteName{
   static const String login = '/login';
   static const String register = '/register';
   static const String search = '/search';
+  static const String mycollects = '/mycollects';
+  static const String about = '/about';
 }
