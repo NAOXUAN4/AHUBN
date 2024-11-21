@@ -1,4 +1,5 @@
 import 'package:exp1_10_29/pages/auth/auth_vm.dart';
+import 'package:exp1_10_29/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,9 +38,10 @@ class _RegisterPageState extends State<RegisterPage> {
     // TODO: implement build
     child: Scaffold(
         body:Container(   //输入框承载
+          color: theme_color.theme_color_Lightest,
           height: double.infinity,
           width: double.infinity,
-          margin: EdgeInsets.all(30.w),
+          padding: EdgeInsets.all(30.w),
           child: Consumer<AuthViewModel>(builder: (context,vm,child){
             return Column(
               children: [
@@ -69,10 +71,10 @@ class _RegisterPageState extends State<RegisterPage> {
                          }
                       });
                     },
-                    child: Text("注册",style: TextStyle(color: Colors.grey,fontSize: 15.sp),),
+                    child: Text("注册",style: TextStyle(color: theme_color.theme_color_Aveage,fontSize: 15.sp),),
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Colors.grey,width: 1.r),
-                      foregroundColor: HexColor("#5cccc1"),
+                      side: BorderSide(color: theme_color.theme_color_Aveage,width: 1.r),
+                      foregroundColor: theme_color.theme_color_Aveage,
                       //backgroundColor: HexColor("#5cccc1"),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
                     ),
@@ -93,13 +95,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: onChanged,  //监听输入框内容,使用onChanged回调函数
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),
-                        borderSide: BorderSide(color: Colors.grey)),  //未激活状态
+                        borderSide: BorderSide(color: theme_color.theme_color_Aveage)),  //未激活状态
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),
-                        borderSide: BorderSide(color: HexColor("#5cccc1"),width: 2.r)), //激活状态
+                        borderSide: BorderSide(color: theme_color.theme_color_Dark,width: 2.r)), //激活状态
                     hintText: "${text}",
-                    hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                    prefixIcon: Icon(icon),
-                    suffixIcon: isPassword ? IconButton(icon: Icon(is_obscureText ? Icons.visibility_off : Icons.visibility), onPressed: (){
+                    hintStyle: TextStyle(fontSize: 15,color: theme_color.theme_color_Aveage),
+                    prefixIcon: Icon(icon,color: theme_color.theme_color_Aveage,),
+                    suffixIcon: isPassword ? IconButton(icon: Icon(is_obscureText ? Icons.visibility_off : Icons.visibility,color: theme_color.theme_color_Aveage,), onPressed: (){
                       setState(() {
                         // TODO: implement onPressed
                            //密文输出型态切换

@@ -11,7 +11,7 @@ class CookieInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     SpUtils.getStringList(Constants.SP_Cookie_List).then((cookies){
-      options.headers[HttpHeaders.setCookieHeader] = cookies;   //重写请求头，加入cookie
+      options.headers[HttpHeaders.cookieHeader] = cookies;   //重写请求头，加入cookie
       handler.next(options);
     });
   }

@@ -1,4 +1,5 @@
 
+import 'package:exp1_10_29/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,18 +29,18 @@ class _HotKeyPageState extends State<HotKeyPage> {
       return vm;
     },
     child: Scaffold(
-        backgroundColor: HexColor("#ffffff"),
+        backgroundColor: theme_color.theme_color_Lightest,
         body: SafeArea(child: SingleChildScrollView(child:  Column(
           children: [
             _hotKeyBar(),
             SizedBox(height: 10),
             Container(
               padding: EdgeInsets.all(5.r),
-              margin: EdgeInsets.all(2.r),
+              margin: EdgeInsets.only(left: 4.w,right: 4.w),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                gradient: LinearGradient(colors: [HexColor("#e7d1f2"), HexColor("#ffffff")],
-                      stops: [0.0, 1.0],), //
+                color: theme_color.theme_color_Lighter,
+                border: Border.all(color: theme_color.theme_color_Aveage, width: 1)
               ),
               child: _gridItems(0),
             ),//热词GridView1
@@ -48,11 +49,11 @@ class _HotKeyPageState extends State<HotKeyPage> {
             SizedBox(height: 10),
             Container(
               padding: EdgeInsets.all(5.r),
-              margin: EdgeInsets.all(2.r),
+              margin: EdgeInsets.only(left: 4.w,right: 4.w),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                gradient: LinearGradient(colors: [HexColor("#e7d1f2"), HexColor("#ffffff")],
-                      stops: [0.0, 1.0],), //
+                color: theme_color.theme_color_Lighter, //
+                border: Border.all(color: theme_color.theme_color_Aveage, width: 1)
               ),
               child: _gridItems(1),
             )//常用网站GridView2
@@ -64,12 +65,12 @@ class _HotKeyPageState extends State<HotKeyPage> {
   Widget _hotKeyBar(){
     return
       Container(   //第一排SizeBox
-        margin: EdgeInsets.only(left: 2.w,right: 2.w),
+        margin: EdgeInsets.only(left: 4.w,right: 4.w),
         decoration: BoxDecoration(
-            color: HexColor("#f7effa"),
+            color: theme_color.theme_color_Lighter,
             borderRadius: BorderRadius.all(Radius.circular(15.r)),
             // border: Border.all(color: Colors.black12),
-            border:Border.all(color: HexColor("#e8d2f2"), width: 2)
+            border:Border.all(color: theme_color.theme_color_Aveage, width: 1)
         ),
         width: double.infinity,
         height: 50.h,
@@ -77,10 +78,21 @@ class _HotKeyPageState extends State<HotKeyPage> {
           Container(   //热词标题
             width: 300,
             margin: EdgeInsets.only(left: 20),
-            child: Text("搜索热词",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w300),),
+            child: Text("搜索热词",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400,color: theme_color.theme_color_Aveage),),
           ),
           Expanded(   //搜索图标
-            child: Icon(Icons.search_rounded),
+            child: GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, RouteName.search,arguments: {
+                      "search_text":"",
+                  });
+              },
+              child: Icon(
+                Icons.search_rounded,
+                color: theme_color.theme_color_Dark,
+                size: 30
+            )
+            ),
           ),
         ],//标题，搜索图标
 
@@ -88,12 +100,12 @@ class _HotKeyPageState extends State<HotKeyPage> {
   }
   Widget _commonWebbar(){
     return Container(   //第一排SizeBox
-        margin: EdgeInsets.only(left: 2.w,right: 2.w),
+        margin: EdgeInsets.only(left: 4.w,right: 4.w),
         decoration: BoxDecoration(
-            color: HexColor("#f7effa"),
+            color: theme_color.theme_color_Lighter,
             borderRadius: BorderRadius.all(Radius.circular(15.r)),
             // border: Border.all(color: Colors.black12),
-            border:Border.all(color: HexColor("#e8d2f2"), width: 2)
+            border:Border.all(color: theme_color.theme_color_Aveage, width: 1)
         ),
         width: double.infinity,
         height: 50.h,
@@ -101,7 +113,7 @@ class _HotKeyPageState extends State<HotKeyPage> {
           Container(   //热词标题
             width: 300,
             margin: EdgeInsets.only(left: 20),
-            child: Text("常用网站",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w300),),
+            child: Text("常用网站",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400,color: theme_color.theme_color_Aveage),),
           ),
         ],//标题，搜索图标
 
@@ -123,38 +135,45 @@ class _HotKeyPageState extends State<HotKeyPage> {
           itemCount: dataList.length ?? 0,
           itemBuilder: (context, index) {
             return GestureDetector (onTap: (){
-              if(dataList[index].link != null){  //
-                //WebsiteState
-                Navigator.pushNamed(context, RouteName.webViewPage,arguments: {
-                  "title":dataList[index].name ?? "",
-                  "message":"Card index: ${index}",
-                  "target_url": dataList[index].link ?? ""});
-              }
             },
-                child:Container(  ///Item标签
+                child:GestureDetector(
+                  onTap: ItemState == 0 ?
+                      () {
+                        Navigator.pushNamed(context, RouteName.search,arguments: {
+                          "search_text":dataList[index].name ?? ""});}
+                      :
+                      (){
+                        if(dataList[index].link != null){  //
+                        //WebsiteState
+                        Navigator.pushNamed(context, RouteName.webViewPage,arguments: {
+                          "title":dataList[index].name ?? "",
+                          "message":"Card index: ${index}",
+                          "target_url": dataList[index].link ?? ""});}},
+                  child:Container(  ///Item标签
                   margin: EdgeInsets.all(5),
                   padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [HexColor("#fff7fe"), HexColor("#ffffff")],
+                    gradient: LinearGradient(colors: [theme_color.theme_color_Lightest, theme_color.theme_color_Lightest],
                       stops: [0.0, 1.0],),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    border:Border.all(color: HexColor("#a3b0b2"), width: 1),
+                    border:Border.all(color: theme_color.theme_color_Aveage, width: 1),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        width: 100.w,
+                        width: 90.w,
                         alignment: Alignment.center,
                         padding: EdgeInsets.all(2),
                         child: Text(" ${dataList[index].name ?? "" }",
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: TextStyle(fontWeight: FontWeight.w500,color:HexColor("#313031"),fontSize: 15,fontFamily: "PingFangSC"),),
+                          style: TextStyle(fontWeight: FontWeight.w500,color:theme_color.theme_color_Darker,fontSize: 15,fontFamily: "PingFangSC"),),
                       )
                     ]
                   ),
+                ),
                 ));
           }
       );

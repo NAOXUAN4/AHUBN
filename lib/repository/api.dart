@@ -1,6 +1,9 @@
 //api请求统一解析
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:exp1_10_29/repository/datas/login_data.dart';
+import 'package:exp1_10_29/repository/datas/search_data.dart';
 import '../http/dio_instance.dart';
 import 'datas/common_website_data.dart';
 import 'datas/home_Lists_data.dart';
@@ -53,7 +56,7 @@ class Api {
     Response response = await DioInstance.instance().post(   //发送Post传参请求
         path: "user/register",
         data: {"username":username,"password":password,"repassword":repassword});
-    print(response.data);
+    // print(response.data);
     try{ //若报错肯定进入过拦截器的错误处理
       response.data["errorCode"] == 0; //没被修改过，还存在"errcode"
       return true;
@@ -67,9 +70,9 @@ class Api {
     Response response = await DioInstance.instance().post(   //发送Post传参请求
         path: "user/login",
         data: {"username":username,"password":password,});
-    print(response.data);
+    // print(response.data);
     try{ //若报错肯定进入过拦截器的错误处理
-      response.data["errorCode"] == 0; //没被修改过，还存在"errcode"
+      response.data["errorCode"] == 0; //没被修改过，还存在"errcode
       return LoginData.fromJson(response.data);
     }
     catch(e){
@@ -77,5 +80,35 @@ class Api {
     }//拦截器会返回true或false
   }
 
+   Future<dynamic>logout()async{  //登录
+    Response response = await DioInstance.instance().get(   //发送Post传参请求
+        path: "user/logout/json",);
+    // print(response.data);
+    if(response.data == true){
+      return response.data;
+    }else{
+      return false;
+    }
+  }
+
+  //收藏
+  Future<bool?> collect(String? id,bool isCollect) async{
+    String pathCollect = isCollect? "collect": "uncollect_originId";
+    Response response = await DioInstance.instance().post(
+        path: "lg/$pathCollect/$id/json");
+    if(response.data == true){
+      return response.data;
+    }else{
+      return false;
+    }
+  }
+
+  Future<List<SearchItemsData>?> searchList(String pageCount,String keyword) async{
+    Response response = await DioInstance.instance().post(
+        path: "article/query/$pageCount/json",
+        data: {"k":keyword});
+    var searchData = SearchData.fromJson(response.data);
+    return searchData.datas;
+  }
 
 }

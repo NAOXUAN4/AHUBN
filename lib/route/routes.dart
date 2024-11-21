@@ -1,4 +1,5 @@
 
+import 'package:exp1_10_29/pages/search/search_page.dart';
 import 'package:flutter/material.dart';
 import '../pages/auth/login_page.dart';
 import '../pages/auth/register_page.dart';
@@ -16,7 +17,8 @@ class Routes{
             TabPage(),
             settings: settings);
       case RouteName.webViewPage:
-        var map = settings.arguments as Map;   //接收参数，转化为map
+        var map = settings.arguments as Map;
+           //接收参数，转化为map
         return pageRoute(
             WebViewPage(title:"${map["title"]}"),   //子页面构造参数"title"
             settings: settings);
@@ -31,6 +33,11 @@ class Routes{
       case RouteName.register:
         return pageRoute(RegisterPage(),
             settings: settings);
+      case RouteName.search:
+        var map = settings.arguments as Map;
+        return pageRoute(
+            SearchPage(keyword: "${map["search_text"]}"),
+          settings: settings);
       default:
         return pageRoute(
             HomePage(),
@@ -61,4 +68,5 @@ class RouteName{
   static const String test = '/test';
   static const String login = '/login';
   static const String register = '/register';
+  static const String search = '/search';
 }

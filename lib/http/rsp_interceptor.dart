@@ -1,4 +1,4 @@
-//拦截器，在返回数据时，对数据进行预处理，并返回给viewmodel，此时数据已经过预处理。
+//拦截器，在返回数据时，对数据进行预处理，并返回给viewmodel，此时数据已经过预处理，但未返回，此时数据未过预处理
 import 'package:dio/dio.dart';
 import 'package:oktoast/oktoast.dart';
 import 'BaseModel.dart';
@@ -24,8 +24,9 @@ class ResponseInterceptor extends Interceptor {
                                                                             //errCode 和 errMsg被剥离
           }
         }else if(rsp.errorCode == -1001){
-          showToast("登录状态失效，请重新登录");
-          handler.reject(DioException(requestOptions: response.requestOptions, message: "未登录"));
+          showToast("${rsp.errorMsg}");
+         handler.next(Response(
+              requestOptions: response.requestOptions, data: "未登录"));
         }else if(rsp.errorCode == -1){   //注册报错
           showToast('${rsp.errorMsg}');
           handler.next(Response(

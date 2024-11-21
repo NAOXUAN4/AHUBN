@@ -29,13 +29,18 @@ class AuthViewModel with ChangeNotifier{
       return false;
     }
     else {
-      LoginData loginData = await Api.instance.login(loginInfo.username, loginInfo.password);
-      SpUtils.saveString(Constants.SP_UserName, loginData.username?? "");  //本地存储用户数据
-      SpUtils.saveString(Constants.SP_Password, loginData.password?? "");
-      SpUtils.saveString(Constants.SP_User_Nickname, loginData.nickname?? "");
-      return true;
-    }
+      var response = await Api.instance.login(loginInfo.username, loginInfo.password);
+      if(response!=false){
+        LoginData loginData = response;
+        SpUtils.saveString(Constants.SP_UserName, loginData.username?? "");  //本地存储用户数据
+        SpUtils.saveString(Constants.SP_Password, loginData.password?? "");
+        SpUtils.saveString(Constants.SP_User_Nickname, loginData.nickname?? "");
+        return true;
+      }
 
+      return false;
+
+    }
   }
 
 }

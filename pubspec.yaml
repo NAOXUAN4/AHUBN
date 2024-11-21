@@ -59,6 +59,8 @@ dependencies:
   icons_launcher: ^2.1.0
   #11.shared_preferences: 本地化存储
   shared_preferences: ^2.0.15
+  #12.flutter_html
+  flutter_html: ^3.0.0-alpha.6
 
 dev_dependencies:
   flutter_test:

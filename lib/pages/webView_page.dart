@@ -1,3 +1,4 @@
+import 'package:exp1_10_29/commonUi/Loading_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,8 +28,16 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   void initState() {
     super.initState();
+    LoadingUi.showLoading();
 
   }
+
+  @override
+  void dispose() {
+    // 确保在 widget 被销毁时移除监听器
+    super.dispose();
+  }
+
   void didChangeDependencies() {  // 当依赖改变
     super.didChangeDependencies();
     var map = ModalRoute.of(context)?.settings.arguments;
@@ -44,13 +53,19 @@ class _WebViewPageState extends State<WebViewPage> {
       // 这里可以使用从路由获取的参数来构建 URL
         ..loadRequest(Uri.parse("${_target_url}"));
       _isControllerInitialized = true;
+
     }
+
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title),),
+      // appBar: AppBar(title: Text(widget.title),),
       body: SafeArea(child: Container(
+          height: double.infinity,
+          width: double.infinity,
           child: Column(children: [
             // Container(
             //     margin: EdgeInsets.all(15.r),

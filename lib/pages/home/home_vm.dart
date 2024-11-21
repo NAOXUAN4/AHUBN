@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:exp1_10_29/commonUi/Loading_ui.dart';
 import 'package:flutter/foundation.dart';
 import '../../repository/api.dart';
 import '../../repository/datas/home_Lists_data.dart';
@@ -28,7 +29,8 @@ class HomeViewModel with ChangeNotifier{
       listData?.clear();
       ListPageCountNow = 0;
       await getTopList();
-      await getHomeListData(LoadMore);  //LoadMore = true
+      await getHomeListData(LoadMore);
+      LoadingUi.hideLoading();
     }else {
       ListPageCountNow++;
       await getHomeListData(LoadMore);
@@ -45,6 +47,18 @@ class HomeViewModel with ChangeNotifier{
   Future getTopList() async {
     List<HomeItemsData>? topList = await Api.instance.getTopList();
     listData?.addAll(topList ?? []);
+  }
+
+  Future setCollect(String? id,int index,bool is_collect) async{
+
+    bool? collect_rsp = await Api.instance.collect(id,is_collect);
+    if(collect_rsp == true){
+      listData![index].collect = is_collect;
+    }
+    print("listData![index].collect = ${listData![index].collect}");
+    notifyListeners();
+    return collect_rsp;
+
   }
 
 }

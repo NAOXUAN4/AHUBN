@@ -1,5 +1,6 @@
 import 'package:exp1_10_29/pages/auth/auth_vm.dart';
 import 'package:exp1_10_29/route/routes.dart';
+import 'package:exp1_10_29/theme.dart';
 import 'package:exp1_10_29/utils/sp_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,10 @@ class _LoginPageState extends State<LoginPage> {
         body:Container(   //输入框承载
           height: double.infinity,
           width: double.infinity,
-          margin: EdgeInsets.all(30.w),
+          decoration: BoxDecoration(
+            color: theme_color.theme_color_Lightest
+          ),
+          padding: EdgeInsets.all(30.r),
           child: Column(
             children: [
               SizedBox(height: 150.h),
@@ -85,10 +89,10 @@ class _LoginPageState extends State<LoginPage> {
                     print("登录");
                     _handleLogin();
                   },
-                  child: Text("登录",style: TextStyle(color: Colors.grey,fontSize: 15.sp),),
+                  child: Text("登录",style: TextStyle(color: theme_color.theme_color_Aveage,fontSize: 15.sp),),
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.grey,width: 1.r),
-                    foregroundColor: HexColor("#5cccc1"),
+                    side: BorderSide(color: theme_color.theme_color_Aveage,width: 1.r),
+                    foregroundColor: theme_color.theme_color_Lighter,
                     //backgroundColor: HexColor("#5cccc1"),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
                   ),
@@ -101,9 +105,9 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: (){
                     Navigator.pushNamed(context, "/register");
                   },
-                  child: Text("注册",style: TextStyle(color: Colors.grey,fontSize: 15.sp),),
+                  child: Text("注册",style: TextStyle(color: theme_color.theme_color_Aveage,fontSize: 15.sp),),
                   style: TextButton.styleFrom(
-                    foregroundColor: HexColor("#5cccc1"),
+                    foregroundColor: theme_color.theme_color_Aveage,
                     //backgroundColor: HexColor("#5cccc1"),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
                   ),
@@ -121,13 +125,13 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: is_obscureText && isPassword,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),
-                        borderSide: BorderSide(color: Colors.grey)),  //未激活状态
+                        borderSide: BorderSide(color: theme_color.theme_color_Aveage)),  //未激活状态
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),
-                        borderSide: BorderSide(color: HexColor("#5cccc1"),width: 2.r)), //激活状态
+                        borderSide: BorderSide(color: theme_color.theme_color_Darker,width: 2.r)), //激活状态
                     hintText: "${text}",
-                    hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                    prefixIcon: Icon(icon),
-                    suffixIcon: isPassword ? IconButton(icon: Icon(is_obscureText ? Icons.visibility_off : Icons.visibility), onPressed: (){
+                    hintStyle: TextStyle(fontSize: 15,color: theme_color.theme_color_Aveage),
+                    prefixIcon: Icon(icon, color: theme_color.theme_color_Aveage),
+                    suffixIcon: isPassword ? IconButton(icon: Icon(is_obscureText ? Icons.visibility_off : Icons.visibility, color: theme_color.theme_color_Aveage), onPressed: (){
                       setState(() {
                         // TODO: implement onPressed
                            //密文输出型态切换

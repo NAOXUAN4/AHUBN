@@ -1,5 +1,6 @@
 
 import 'package:exp1_10_29/pages/personal/personal_page.dart';
+import 'package:exp1_10_29/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,8 +30,10 @@ class _TabPageState extends State<TabPage>{
           PersonalPage(),
       ],),
       bottomNavigationBar: BottomNavigationBar(   //底部导航栏
-        selectedLabelStyle: TextStyle(color: HexColor("#575558"),fontSize: 12.sp,fontFamily: "Roboto"),
-        unselectedLabelStyle: TextStyle(color: HexColor("#fcf5ff"),fontSize: 8.sp,fontFamily: "Roboto"),
+        fixedColor: theme_color.theme_color_Dark,
+        backgroundColor: theme_color.theme_color_Lightest,
+        selectedLabelStyle: TextStyle(fontSize: 12.sp,fontFamily: "Roboto"),
+        unselectedLabelStyle: TextStyle(fontSize: 8.sp,fontFamily: "Roboto"),
         currentIndex: _currentIndex,
         items: _barItems(),
         onTap: (int index){   //点击事件
@@ -53,10 +56,10 @@ class _TabPageState extends State<TabPage>{
         label: nameList[i].keys.first,
         activeIcon: Icon(
           nameList[i].values.first,
-          color: HexColor("#575558"),),   //触发时
+          color: theme_color.theme_color_Dark,),   //触发时
         icon: Icon(
           nameList[i].values.first,
-          color: HexColor("#efe9f2"),),  //默认未触发时
+          color: theme_color.theme_color_Light,),  //默认未触发时
       ));
     }
     return list;
